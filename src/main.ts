@@ -6,8 +6,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('E-Commerce Order Service API')
-    .setDescription('E-Commerce 주문 서비스 API 문서')
+    .setTitle('E-Commerce Service API')
+    .setDescription('E-Commerce 서비스 API 문서')
     .setVersion('1.0')
     .addTag('users', '사용자 관리')
     .addTag('balance', '잔액 관리')
