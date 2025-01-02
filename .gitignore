@@ -25,6 +25,9 @@ jspm_packages/
 # Output of 'npm pack'
 *.tgz
 
+# Database folder
+db/
+
 # dotenv environment variables file
 .env
 
