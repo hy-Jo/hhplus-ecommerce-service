@@ -94,4 +94,4 @@ https://docs.google.com/spreadsheets/d/15VuPwXB8JitZtk5T2-KGmRT9AV95vOvN-UFheYKM
 
 ### API 문서
 상세 API 문서는 서버 실행 후 다음 경로에서 확인할 수 있습니다:
-- Swagger UI: `http://localhost:3000/api-docs`
+- Swagger UI: `http://localhost:3300/api-docs`
