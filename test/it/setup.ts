@@ -1,7 +1,9 @@
-import { DataSource } from "typeorm";
+
 import * as fs from "fs";
 import { MySqlContainer } from "@testcontainers/mysql";
-import { getDatasource } from "./util";
+import { PrismaClient } from "@prisma/client";
+
+let prisma: PrismaClient;
 
 const init = async () => {
   await Promise.all([initMysql()]);
@@ -9,29 +11,24 @@ const init = async () => {
 
 const initMysql = async () => {
   const mysql = await new MySqlContainer("mysql:8")
-    .withDatabase("dbname")
+    .withDatabase("ecommerce")
     .withUser("root")
-    .withRootPassword("pw")
+    .withRootPassword("root")
     .start();
 
   global.mysql = mysql;
 
-  process.env.DB_HOST = mysql.getHost();
-  process.env.DB_PORT = mysql.getPort().toString();
-  process.env.DB_USERNAME = mysql.getUsername();
-  process.env.DB_PASSWORD = mysql.getUserPassword();
-  process.env.DB_DATABASE = mysql.getDatabase();
-  process.env.DB_LOGGING_ENABLED = "true";
+  process.env.DATABASE_URL = `mysql://root:root@${mysql.getHost}:${mysql.getPort}/${mysql.getDatabase}`;
 
-  const datasource = await getDatasource();
-  await datasource.runMigrations();
-  await insertTestData(datasource);
+  prisma = await new PrismaClient();
+  await prisma.$connect();
+  await insertTestData(prisma);
 };
 
-const insertTestData = async (datasource: DataSource) => {
+const insertTestData = async (datasource: PrismaClient) => {
   const importSql = fs.readFileSync("./test/it/import.sql").toString();
   for (const sql of importSql.split(";").filter((s) => s.trim() !== "")) {
-    await datasource.query(sql);
+    await prisma.$executeRawUnsafe(sql);
   }
 };
 
