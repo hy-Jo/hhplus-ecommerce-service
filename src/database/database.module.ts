@@ -1,28 +1,14 @@
-import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import { DatabaseConfig, dbConfig } from "./database.config";
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { PrismaService } from 'prisma/prisma.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forRootAsync({
-      imports: [
-        ConfigModule.forRoot({
-          load: [dbConfig],
-          envFilePath: `.env.${process.env.NODE_ENV}`,
-        }),
-      ],
-      useFactory: (configService: ConfigService) => ({
-        type: "mysql",
-        ...configService.get<DatabaseConfig>("database"),
-        synchronize: false,
-        autoLoadEntities: true,
-        relationLoadStrategy: "join",
-      }),
-      inject: [ConfigService],
+    ConfigModule.forRoot({
+      envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
   ],
-  controllers: [],
-  providers: [],
+  providers: [PrismaService],
+  exports: [PrismaService],
 })
 export class DatabaseModule {}
