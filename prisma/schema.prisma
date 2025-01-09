@@ -30,7 +30,7 @@ model BalanceTransaction {
   id                Int      @id @default(autoincrement())
   user_id           Int
   amount            Decimal
-  transaction_type  String
+  status            BalanceTransactionStatus
   description       String
   created_at        DateTime @default(now())
   user              User     @relation(fields: [user_id], references: [id])
@@ -132,4 +132,9 @@ enum UserCouponStatus {
   UNUSED
   USED
   EXPIRED
+}
+
+enum BalanceTransactionStatus {
+  DEPOSIT
+  USED
 }
