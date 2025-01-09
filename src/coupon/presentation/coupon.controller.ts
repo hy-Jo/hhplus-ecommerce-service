@@ -1,6 +1,6 @@
 import { Controller, Post, Get, Body, Query, Param } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CouponDto } from 'src/dto/coupon.dto';
+import { CouponDto } from 'src/coupon/domain/dto/coupon.dto';
 
 @ApiTags('coupons')
 @Controller('coupons')

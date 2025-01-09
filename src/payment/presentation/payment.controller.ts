@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { PaymentDto } from "src/dto/payment.dto";
+import { PaymentDto } from "src/payment/domain/dto/payment.dto";
 
 @ApiTags('payments')
 @Controller('payments')

@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ProductDto } from '../dto/product.dto';
+import { ProductDto } from '../domain/dto/product.dto';
 
 @ApiTags('products')
 @Controller('products')
