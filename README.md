@@ -1,18 +1,14 @@
 # 시나리오 E-Commerce Service
 
-## 주요 기능
-- 사용자 잔액 충전 및 조회 (동시성 처리)
-- 상품 목록 조회 및 재고 관리
-- 선착순 쿠폰 발급 시스템
-- 주문 생성 및 결제 처리
-- 인기 상품 추천 (최근 3일간 가장 많이 팔린 상위 5개 상품)
-
  ## ERD 설계
-![image](https://github.com/user-attachments/assets/71088f38-f661-4891-af77-a90f7107ba54)
+![image](https://github.com/user-attachments/assets/ffebe572-29a1-4d27-923e-b8cb230b00d7)
 https://dbdiagram.io/d/%EC%9D%B4%EC%BB%A4%EB%A8%B8%EC%8A%A4ERD_HY-67751bc95406798ef708c5a3
 
-## API 명세
-![image](https://github.com/user-attachments/assets/b15f565c-7db3-4d2c-8308-758384c471bf)
+## API Swagger 기능
+![image](https://github.com/user-attachments/assets/2cbd4fc0-12fd-4b80-a3a4-f9e801cb5bd6)
+![image](https://github.com/user-attachments/assets/a42010b9-2226-47a4-98ad-a84d7b8896ec)
+![image](https://github.com/user-attachments/assets/d33f68e8-80ad-4117-b932-ad14537b6b6f)
+
 
 ### Users
 - `GET /users/:id` - 사용자 정보 조회
