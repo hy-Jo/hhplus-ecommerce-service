@@ -1,0 +1,140 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  Int                   @id @default(autoincrement())
+  username            String
+  email               String                @unique
+  password_hash       String
+  balance             Decimal
+  created_at          DateTime              @default(now())
+  updated_at          DateTime              @updatedAt
+  balance_transactions BalanceTransaction[]
+  orders              Order[]
+  user_coupons        UserCoupon[]
+}
+
+model BalanceTransaction {
+  id                Int      @id @default(autoincrement())
+  user_id           Int
+  amount            Decimal
+  status            BalanceTransactionStatus
+  description       String
+  created_at        DateTime @default(now())
+  user              User     @relation(fields: [user_id], references: [id])
+}
+
+model Product {
+  id              Int           @id @default(autoincrement())
+  name            String
+  price           Decimal
+  stock_quantity  Int
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
+  order_items     OrderItem[]
+  popular_products PopularProduct[]
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  user_id         Int
+  user_coupon_id  Int?
+  origin_amount   Decimal
+  discount_amount Decimal
+  final_amount    Decimal
+  status          OrderStatus
+  created_at      DateTime    @default(now())
+  user            User        @relation(fields: [user_id], references: [id])
+  user_coupon     UserCoupon? @relation(fields: [user_coupon_id], references: [id])
+  order_items     OrderItem[]
+  payments        Payment[]
+}
+
+model OrderItem {
+  id              Int     @id @default(autoincrement())
+  order_id        Int
+  product_id      Int
+  quantity        Int
+  price_at_order  Decimal
+  order           Order   @relation(fields: [order_id], references: [id])
+  product         Product @relation(fields: [product_id], references: [id])
+}
+
+model Coupon {
+  id                  Int          @id @default(autoincrement())
+  code                String       @unique
+  discount_amount     Decimal
+  valid_from          DateTime
+  valid_to            DateTime
+  total_quantity      Int
+  remaining_quantity  Int
+  user_coupons        UserCoupon[]
+}
+
+model UserCoupon {
+  id          Int               @id @default(autoincrement())
+  user_id     Int
+  coupon_id   Int
+  status      UserCouponStatus
+  issued_at   DateTime          @default(now())
+  used_at     DateTime?
+  user        User              @relation(fields: [user_id], references: [id])
+  coupon      Coupon            @relation(fields: [coupon_id], references: [id])
+  orders      Order[]
+}
+
+model PopularProduct {
+  id          Int      @id @default(autoincrement())
+  product_id  Int
+  sales_count Int
+  sales_date  DateTime
+  product     Product  @relation(fields: [product_id], references: [id])
+}
+
+model Payment {
+  id              Int           @id @default(autoincrement())
+  order_id        Int
+  amount          Decimal
+  payment_method  String
+  status          PaymentStatus
+  created_at      DateTime      @default(now())
+  order           Order         @relation(fields: [order_id], references: [id])
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum UserCouponStatus {
+  UNUSED
+  USED
+  EXPIRED
+}
+
+enum BalanceTransactionStatus {
+  DEPOSIT
+  USED
+}
